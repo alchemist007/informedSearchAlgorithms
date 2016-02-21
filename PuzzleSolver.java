@@ -3,6 +3,7 @@ import java.util.Arrays;
 
 
 public class PuzzleSolver {
+	
 	/*most likely not needed for now because this is just a main class
 	static Board initialState;
 	static Board goalState;
@@ -41,8 +42,23 @@ public class PuzzleSolver {
 		//AStar solver=new AStar(initialBoard,goalBoard,m);
 		//solver.solve();
 		
+		
 		IDAStar idaSolver=new IDAStar(initialBoard,goalBoard,m);
+		double start=System.currentTimeMillis();
 		idaSolver.solve();
+		double end=System.currentTimeMillis();
+		System.out.println(end-start);
+		
+		//DepthFirstBranchBound dfbb=new DepthFirstBranchBound(initialBoard,goalBoard,m);
+		//dfbb.solve();
+		
+		/*
+		 * DFBB is not working. FOR IDAstar it was the continue that made the difference.
+		 * for tomorrow start from here.
+		 */
+		
+		
+
 
 	}
 
@@ -87,7 +103,7 @@ System.out.println(m.getDistance(initialBoard, goalBoard));
 
 System.out.println("--------------Testing ManhattanDistance-------------");
 int x=m.getDistance(initialBoard, goalBoard);
-System.out.println(x);
+System.out.println(x);	//hand calculated md for easy=5, med=7
 
 
 

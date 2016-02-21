@@ -3,7 +3,11 @@ import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
-
+/**
+ * implements the iterative deepening A star algorithm
+ * @author nesh2013
+ *
+ */
 public class IDAStar {
 	
 	private Board initialState;
@@ -34,13 +38,13 @@ public class IDAStar {
 			//add to explored.
 			
 			//holds the min value of f for the successors
-			int min_val=10000;
+			int min_val=10000;	//really big number.
 			
 			while(!queue.isEmpty()){
 				Board currentBoard=queue.poll();
 				
 				//not sure if this is needed
-				explored.add(currentBoard);	//add to explored so that we dont explore again.
+				explored.add(currentBoard);	//add to explored 
 				
 				//check if b is the goal state
 				if(currentBoard.equals(this.goalState)){
@@ -83,11 +87,13 @@ public class IDAStar {
 						int g=board.getG();
 						board.setF(g+h);
 						board.setPreviousState(currentBoard);
-
+						
+						
 						//Update the cutoff for the next iterative deepening
 						if(board.getF()>limit){
 							if(board.getF()<min_val){
-								min_val=board.getF();
+								min_val=board.getF();	//set new minimun for now
+								//System.out.println(min_val);
 							}
 							continue;
 						}
