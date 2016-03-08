@@ -18,7 +18,6 @@ public class DepthFirstBranchBound {
 	}
 	
 	public void solve(){
-		
 		//for detecting already explored nodes
 		ArrayList<Board> explored=new ArrayList<Board>();
 		//for frontier nodes. Ordered according to f value
@@ -29,23 +28,20 @@ public class DepthFirstBranchBound {
 																					//is called depending on what is passed.
 		//add initial to queue
 		queue.add(this.initialState);
-		
-		int L=1000;
-		
 		int counter=0;
 		Board solutionBoard=null;
-		while(!queue.isEmpty() /*&& counter<10000*/){
-			//counter++;
+		int L=Integer.MAX_VALUE;
+		
+		double startTime=System.currentTimeMillis();	//for finding optimal solution solution
+		double runtime=0;
+		
+		while(!queue.isEmpty()){
 			
-			//debug
-			System.out.println("QUEUE SIZE "+queue.size());
-			
+			//System.out.println("L "+ L);	//debug
+			//System.out.println(queue.size());	//debug
 			
 			Board currentBoard=queue.poll(); 	//poll returns and removes element from queue.
-			//new code
-			queue.clear();
-			explored.add(currentBoard);	//add to explored so that we dont explore again.
-			
+			explored.add(currentBoard);
 			if(currentBoard.equals(goalState)){
 				solutionBoard=currentBoard;
 				//compute f()
@@ -54,67 +50,30 @@ public class DepthFirstBranchBound {
 				currentBoard.setF(g+h);	//set the f value for the board.
 				//set L
 				if(currentBoard.getF()<L){ 
+					//System.out.println("updating L value"); //debug
 					L=currentBoard.getF(); 
-					System.out.println("Current L Value "+L);
+					runtime=System.currentTimeMillis()-startTime;
+					//System.out.println("Current L Value "+L);	//debug
 				}
 			}
-			
 			else{
-				
-				//if code comes here. we know its not goal state so get the successors
 				ArrayList<Board> successors = currentBoard.getSuccessors();
 				
-				//debugging. print successrs.
-//				System.out.println("SUCCESSORS RIGHT NOW");
-//				for(int i=0; i<successors.size();i++){
-//					
-//					successors.get(i).printBoard();
-//				}
-				
-				//remove the nodes already present in explored
 				for(int i=0; i<successors.size();i++){
 					Board board=successors.get(i);
-					if(explored.contains(board)){	
-						successors.remove(board);	
+					if(!explored.contains(board)){	
+						int h=heuristic.getDistance(board,this.goalState);	//set h according to the heuristic
+						int g=board.getG();	//set g, which is basically the depth.
+						board.setF(g+h);	//set the f value for the board
+						board.setPreviousState(currentBoard); //must set the previousState here for my implementation.
+						if(board.getF()>L){ continue; }
+							
 					}
-				}
-				//debugging. print successrs.
-//				System.out.println("SUCCESSORS AFTER REMOVING ANY PRESENT IN EXPLORED");
-//				for(int i=0; i<successors.size();i++){
-//					
-//					successors.get(i).printBoard();
-//				}
-				
-				
-				//evaluate f, check if its > L, and ifso discard n
-				for(int i=0; i<successors.size();i++){
-					Board board=successors.get(i);
-					int h=heuristic.getDistance(board,this.goalState);	//set h according to the heuristic
-					int g=board.getG();	//set g, which is basically the depth.
-					board.setF(g+h);	//set the f value for the board
-					board.setPreviousState(currentBoard); //must set the previousState here for my implementation.
-					if(board.getF()>L){
-						successors.remove(board);
-					}
-				}
-				
-				//debugging. print successrs.
-//				System.out.println("SUCCESSORS AFTER REMOVING THOSE WHOSE F() IS GREATER THAN L");
-//				for(int i=0; i<successors.size();i++){
-//					
-//					successors.get(i).printBoard();
-//				}
-				//add remaining to queue.
-				for(int i=0; i<successors.size();i++){
-					Board board=successors.get(i);
 					queue.add(board);
 				}
-
 			}
 			
 		}
-		System.out.println("end of while loop");
-		
 		//print solution
 		//create a stack to hold the previous nodes so that we can print the solution easily.
 		Stack<Board> previousStates=new Stack<Board>();
@@ -138,6 +97,7 @@ public class DepthFirstBranchBound {
 		
 		System.out.println("Total number moves= "+numOfMoves);
 		System.out.println("Total number of nodes explored= "+explored.size());
+		System.out.println("Optimal Solution find time= "+runtime+" milliseconds");
 		
 	}
 	

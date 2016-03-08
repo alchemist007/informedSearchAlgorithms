@@ -50,6 +50,8 @@ public class AStar {
 		//as long as queue is not empty we know that there are nodes that must be explored.
 		while(!queue.isEmpty()){
 			
+			System.out.println("QUEUESIZE: "+queue.size());
+			
 			Board currentBoard=queue.poll(); 	//poll returns and removes element from queue.
 			
 			explored.add(currentBoard);	//add to explored.

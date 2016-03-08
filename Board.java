@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * this class is the representation of the board state
+ * @author nesh2013
+ *
+ */
 public class Board implements Comparable<Board>{
 	
 	int rows=3;
@@ -62,6 +67,11 @@ public class Board implements Comparable<Board>{
 	public int getH(){
 		return h;
 	}
+	
+	/**
+	 * gets the previous board state. used for printing all moves
+	 * @return
+	 */
 	public Board getPreviousState(){
 		return this.previousState;
 	}
@@ -74,6 +84,11 @@ public class Board implements Comparable<Board>{
 		previousState=b;
 	}
 	
+	/**
+	 * checks if a board is equal to passed goal
+	 * @param goal the board to check
+	 * @return
+	 */
 	public boolean equals(Board goal){
 		
 		for(int i=0;i<rows;i++){
@@ -92,8 +107,8 @@ public class Board implements Comparable<Board>{
 	 */
 	public ArrayList<Board> getSuccessors(){
 		ArrayList<Board> successors=new ArrayList<Board>();
-		int blankSpaceRow=getBlankIndex()[0];
-		int blankSpaceCol=getBlankIndex()[1];
+		int blankSpaceRow=getBlankIndex()[0];	//row of space
+		int blankSpaceCol=getBlankIndex()[1];	//col of space
 		
 		int[][] boardArray;
 		
@@ -133,7 +148,7 @@ public class Board implements Comparable<Board>{
 			
 		}
 		
-		//set the previous for each of the boards.
+		//set the previous for each of the boards. **this is set in algo too. so double check later**
 		for(Board b: successors){
 			b.setPreviousState(this);
 		}

@@ -3,6 +3,9 @@ import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
+
+
+
 /**
  * implements the iterative deepening A star algorithm
  * @author nesh2013
@@ -56,10 +59,13 @@ public class IDAStar {
 						previousStates.push(temp);
 						temp=temp.getPreviousState();
 					}
-					previousStates.push(initialState);	//now stack has the entire path from initial state to gaol state
+					
 					
 					//you can add code here to get stack info to print out
 					int numOfMoves=previousStates.size();
+					System.out.println("-----INITIAL STATE------");
+					initialState.printBoard();
+					System.out.println("------------------------");
 					//print stack
 					while(!previousStates.isEmpty()){
 						(previousStates.pop()).printBoard();
@@ -95,7 +101,7 @@ public class IDAStar {
 								min_val=board.getF();	//set new minimun for now
 								//System.out.println(min_val);
 							}
-							continue;
+							continue;	//this just skips over that particular board because the f is greater than limit. so we dont expand it.
 						}
 						
 						queue.add(board);
@@ -109,7 +115,7 @@ public class IDAStar {
 				}
 				
 			}
-			limit=min_val;
+			limit=min_val;	//set new limit.
 			
 		}
 
